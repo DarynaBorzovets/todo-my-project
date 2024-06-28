@@ -13,7 +13,7 @@ function InputTodo() {
         body: JSON.stringify(body)
       });
       
-      console.log(response); // Check response status
+      window.location='/'; // Check response status
 
       // Optionally, clear input field after successful submission
       setDescription('');

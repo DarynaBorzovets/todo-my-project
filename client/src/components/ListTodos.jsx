@@ -1,12 +1,49 @@
+import React, { useEffect, useState } from 'react';
 
-import React from 'react'
+function ListTodos() {
+  const [todos, setTodos] = useState([]);
 
-function listTodos() {
+  const getTodos = async () => {
+    try {
+      const response = await fetch("http://localhost:9000/todos");
+      const jsonData = await response.json();
+      setTodos(jsonData); // Update state with fetched data
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+  useEffect(() => {
+    getTodos();
+  }, []); // Empty dependency array to run only once on mount
+
   return (
-    <div>
-      
+    <div className="container">
+      <h2 className="text-center mt-5">Todo List</h2>
+      <table className="table table-striped mt-3">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {todos.map(todo => (
+            <tr key={todo.id}>
+              <td>{todo.description}</td>
+              <td>
+                <button className="btn btn-primary">Edit</button>
+              </td>
+              <td>
+                <button className="btn btn-danger">Delete</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
-  )
+  );
 }
 
-export default listTodos
+export default ListTodos;
