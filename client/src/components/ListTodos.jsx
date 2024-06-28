@@ -3,18 +3,21 @@ import React, { useEffect, useState } from 'react';
 function ListTodos() {
   const [todos, setTodos] = useState([]);
 
-  const getTodos = async () => {
-    try {
-      const response = await fetch("http://localhost:9000/todos");
-      const jsonData = await response.json();
-      setTodos(jsonData); // Update state with fetched data
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-
   useEffect(() => {
-    getTodos();
+    const fetchTodos = async () => {
+      try {
+        const response = await fetch("http://localhost:9000/todos");
+        if (!response.ok) {
+          throw new Error('Failed to fetch todos');
+        }
+        const jsonData = await response.json();
+        setTodos(jsonData); // Update state with fetched data
+      } catch (err) {
+        console.error(err.message);
+      }
+    };
+
+    fetchTodos();
   }, []); // Empty dependency array to run only once on mount
 
   return (
